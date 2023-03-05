@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+   <meta charset="UTF-8">
+   <meta http-equiv="X-UA-Compatible" content="IE=edge">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Нумерологическая таблица Джус И.О.</title>
+
+   <style>
+     div#wrap {
+         display: flex;
+         flex-direction: column;
+         align-items: center;
+      }     
+      #tabl {
+         border: gray 1px solid;
+         padding: 0.2em;
+         border-collapse: collapse;
+         text-align: center;
+      }
+      td {
+         border: gray 1px solid;
+      }
+      #button {
+         margin: 10px;   
+      }
+
+   </style>
+</head>
+
+<body>
+   <div id="wrap">
+   
+   <!-- Создаём пустую таблицу -->
+   <table id="tabl"></table>
+   <!-- Добавлена кнопка для генерации нового случайного числа и вставки в таблицу -->   
+   <button onclick="replaceNumber()" id="button">Добавить число</button>
+   </div>
+
+   <script>
+      // Задание 1.1 Создаём массив из 30 случайных чисел
+      function randomArray(len, max) {
+         return Array.apply(null, Array(len)).map(function() {
+            return Math.round(Math.random() * max);
+         });
+      }
+      arr=randomArray(30,99);
+      
+      // Задание 1.2 Записываем массив в созданную таблицу
+      window.addEventListener("load", function createTable() {
+      
+        let table = document.getElementById("tabl"),
+         row = table.insertRow(), cell,
+         perrow = 6; // 6 столбцов в ряду
+
+         arr.forEach((value, i) => {
+            // Добавление ячейки
+            cell = row.insertCell();
+            cell.innerHTML = value;
+             
+            // Переход на новый ряд
+            let next = i + 1;
+            if (next%perrow==0 && next!=arr.length) { row = table.insertRow(); }
+                            
+         });
+
+         // Задание 1.3 Форматирование для значений ячеек >50
+
+         for (let i = 0, r; r = table.rows[i]; i++) {
+	      for (let j = 0, c; c = r.cells[j]; j++) {
+		      if (c.innerText >= 50) {
+               c.style="background:orange";}
+		   else {
+			c.style="background:transparent";}
+         }};   
+   
+      
+      document.getElementById("wrap").appendChild(table); 
+
+      });
+      
+      // Задание 2. Кнопка, последовательно заменяющая значения в таблице на новые случайные числа из диапазона [0;99], начиная с 1ой ячейки
+      let rowindex=0;
+      let colindex=0;
+      
+      function replaceNumber() {
+      
+      let table = document.getElementById("tabl");
+      let new_value=Math.round(Math.random() * 99);
+      
+      let element=table.rows[rowindex].cells;
+      element[colindex].innerHTML=new_value;
+         
+       if (rowindex !=4 && colindex == 5) {
+         rowindex = rowindex+1;
+         colindex=0; // Переход на следующий ряд
+      }
+      else if (rowindex ==4 && colindex ==5) {
+         rowindex=0;
+         colindex=0; // Возврат к первой ячейке
+      }
+      else colindex=colindex+1; // Следующая ячейка
+      // Форматирование для новых значений, аналогичное исходному
+      for (let i = 0, r; r = table.rows[i]; i++) {
+	      for (let j = 0, c; c = r.cells[j]; j++) {
+		      if (c.innerText >= 50) {
+               c.style="background:orange";}
+		   else {
+			c.style="background:transparent";}
+         }};     
+      }     
+   </script>
+</body>
+
+</html>
